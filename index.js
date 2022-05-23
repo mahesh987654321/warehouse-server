@@ -19,6 +19,7 @@ async function run() {
     await client.connect();
     const serviceCollection = client.db("carFactory").collection("service");
     const orderCollection = client.db("carFactory").collection("order");
+    const reviewCollection = client.db("carFactory").collection("review");
 
     app.get("/service", async (req, res) => {
       const query = {};
@@ -59,6 +60,21 @@ async function run() {
       const cursor = orderCollection.find(query);
       const services = await cursor.toArray();
       res.send(services);
+    });
+    // ?******* Review
+    app.get("/review", async (req, res) => {
+      const query = {};
+      const cursor = reviewCollection.find(query);
+      const services = await cursor.toArray();
+      res.send(services);
+    });
+    // Post review
+    app.post("/review", async (req, res) => {
+      const my = req.body;
+
+      const result = await reviewCollection.insertOne(my);
+
+      res.send(result);
     });
   } finally {
   }
