@@ -226,9 +226,7 @@ async function run() {
         options
       );
 
-      // const token = jwt.sign({ email: email }, process.env.ADD_TOKEN, {
-      //   expiresIn: "30d",
-      // });
+
       res.send(result);
     });
 
