@@ -39,6 +39,7 @@ async function run() {
     const reviewCollection = client.db("carFactory").collection("review");
     const usersCollection = client.db("carFactory").collection("users");
     const paymentCollection = client.db("carFactory").collection("payment");
+    const profileCollection = client.db("carFactory").collection("profile");
     const verifyAdmin = async (req, res, next) => {
       const requestUser = req.decoded.email;
 
@@ -191,6 +192,10 @@ async function run() {
       });
       res.send({ clientSecret: paymentIntent.client_secret });
     });
+    app.get("/create-payment-intent", async (req, res) => {
+      const result = await paymentCollection.find().toArray();
+      res.send(result);
+    });
     app.patch("/order/:id", async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
@@ -204,6 +209,59 @@ async function run() {
       const result = await paymentCollection.insertOne(payment);
       const updateOrder = await orderCollection.updateOne(filter, updateDoc);
       res.send(updateDoc);
+    });
+    // update
+    app.put("/service/:id", async (req, res) => {
+      const id = req.params.id;
+      const user = req.body;
+      const filter = { id: id };
+      console.log(filter);
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: user,
+      };
+      const result = await serviceCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      // const token = jwt.sign({ email: email }, process.env.ADD_TOKEN, {
+      //   expiresIn: "30d",
+      // });
+      res.send(result);
+    });
+    // profile
+    // app.post("/profile", async (req, res) => {
+    //   const my = req.body;
+
+    //   const result = await profileCollection.insertOne(my);
+
+    //   res.send(result);
+    // });
+    app.get("/profile", async (req, res) => {
+      const result = await profileCollection.find().toArray();
+      res.send(result);
+    });
+    app.put("/profile", async (req, res) => {
+      const id = req.params.id;
+      const user = req.body;
+      const filter = { id: id };
+      console.log(filter);
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: user,
+      };
+      const result = await profileCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      // const token = jwt.sign({ email: email }, process.env.ADD_TOKEN, {
+      //   expiresIn: "30d",
+      // });
+      res.send(result);
     });
   } finally {
   }
