@@ -231,14 +231,7 @@ async function run() {
       // });
       res.send(result);
     });
-    // profile
-    // app.post("/profile", async (req, res) => {
-    //   const my = req.body;
 
-    //   const result = await profileCollection.insertOne(my);
-
-    //   res.send(result);
-    // });
     app.get("/profile", async (req, res) => {
       const result = await profileCollection.find().toArray();
       res.send(result);
