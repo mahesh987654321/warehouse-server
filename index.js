@@ -257,10 +257,6 @@ async function run() {
         updateDoc,
         options
       );
-
-      // const token = jwt.sign({ email: email }, process.env.ADD_TOKEN, {
-      //   expiresIn: "30d",
-      // });
       res.send(result);
     });
   } finally {
@@ -270,7 +266,7 @@ run().catch(console.dir);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
+// 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
